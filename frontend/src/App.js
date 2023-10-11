@@ -1,3 +1,12 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import RootLayout from './components/RootLayout';
+import HomePage from './components/HomePage';
+import EventsPage from './components/EventsPage';
+import EventDetailPage from './components/EventDetailPage';
+import NewEventPage from './components/NewEventPage';
+import EditEventPage from './components/EditEventPage';
+import EventsRoot from './components/EventsRoot';
+
 // Challenge / Exercise
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
@@ -21,7 +30,24 @@
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 
 function App() {
-  return <div></div>;
+  const appRouting = createBrowserRouter([
+    {
+      path: '/',
+      element: <RootLayout />,
+      children: [
+        { index: true, element: <HomePage /> },
+        {
+          path: 'events', element: <EventsRoot />, children: [
+            { index: true, element: <EventsPage /> },
+            { path: ':eventId', element: <EventDetailPage /> },
+            { path: 'new', element: <NewEventPage /> },
+            { path: ':eventId/edit', element: <EditEventPage /> }
+          ]
+        }
+      ]
+    }
+  ])
+  return <RouterProvider router={appRouting} />;
 }
 
 export default App;
